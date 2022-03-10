@@ -17,5 +17,9 @@ class Notion(object):
 	def write_row(self, data):
 		r = requests.request("POST", self.base_url+'/v1/pages/', headers=self.headers, data=data)
 		# print(r.status_code, "anthing 200-299 is good. anything else is bad.")	# for Debugging
-		r = r.json()
-		return r
+		try:
+			r.raise_for_status()
+			r = r.json()
+			return r
+		except requests.exceptions.HTTPError as e:
+			raise e

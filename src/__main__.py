@@ -1,16 +1,16 @@
 import json
 import time
-from python_notion_sobol.notion import Notion
-from python_notion_sobol.sobol import Sobol
+from . import notion
+from . import sobol
 
 # Read from Sobol
-my_sobol = Sobol()
-my_notion = Notion()
+my_sobol = sobol.Sobol()
+my_notion = notion.Notion()
 
 sobol_response = my_sobol.read_roles()
-# print(sobol_response)
+print(sobol_response)
 for i in sobol_response:
-	# print(i['name']) # For debugging
+	print(i['name']) # For debugging
 	# Write to Notion
 
 	data = {
@@ -27,17 +27,17 @@ for i in sobol_response:
 			},
 			"Assignees": {
 				"rich_text": [{
-					"text": { "content" : "FirstName LastName"}
+					"text": { "content" : i["owners"]["_id"]}
 				}]
 			},
 			"Team": {
 				"rich_text": [{
-					"text": { "content" : "TeamName"}
+					"text": { "content" : i["contributesTo"]["_id"]}
 				}]	
 			},
 			"Purpose": {
 				"rich_text": [{
-					"text": { "content" : "PurposeHere"}
+					"text": { "content" : i["description"]}
 				}]
 			},
 			"Accountabilities": {
